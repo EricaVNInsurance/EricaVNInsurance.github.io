@@ -246,6 +246,40 @@
       color: var(--muted);
     }
 
+    /* How I can help */
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px;
+    }
+
+    .step-number {
+      display: inline-block;
+      margin-bottom: 18px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--primary);
+    }
+
+    .step h3 {
+      font-size: 1.18rem;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .step p {
+      color: var(--muted);
+    }
+
     /* Footer */
 
     footer {
@@ -280,10 +314,18 @@
       .cards {
         grid-template-columns: 1fr 1fr;
       }
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     @media (max-width: 600px) {
       .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
         grid-template-columns: 1fr;
       }
 
@@ -436,6 +478,72 @@
             <p>
               That's completely fine too. Tell me what you're trying to figure
               out, and we'll start there.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="button-row">
+          <a class="btn btn-primary" href="#contact">Get Medicare Help</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOW I CAN HELP -->
+    <section class="section-light" id="how-i-help">
+      <div class="container">
+
+        <div class="section-heading">
+          <h2>How I can help</h2>
+
+          <p>
+            Medicare can come with a lot to consider. Your doctors, prescriptions,
+            costs, coverage, and benefits can all affect which options make sense
+            for your situation.
+          </p>
+
+          <p class="reassurance">
+            You don't have to sort through all of it by yourself. Here's how we'll
+            work through it.
+          </p>
+        </div>
+
+        <div class="steps">
+
+          <div class="step">
+            <span class="step-number">01</span>
+            <h3>Start with your situation</h3>
+            <p>
+              We'll look at what you have now, what you're hoping to change, and
+              anything you want to make sure we consider.
+            </p>
+          </div>
+
+          <div class="step">
+            <span class="step-number">02</span>
+            <h3>Check the details</h3>
+            <p>
+              We'll review things like your doctors, prescriptions, costs,
+              coverage, and other details that may affect your options.
+            </p>
+          </div>
+
+          <div class="step">
+            <span class="step-number">03</span>
+            <h3>Compare your options</h3>
+            <p>
+              I'll walk you through the differences and explain anything that
+              isn't clear.
+            </p>
+          </div>
+
+          <div class="step">
+            <span class="step-number">04</span>
+            <h3>Take the next step</h3>
+            <p>
+              If you decide to enroll, I can help you through the process and
+              answer questions along the way.
             </p>
           </div>
 
