@@ -280,6 +280,41 @@
       color: var(--muted);
     }
 
+    /* Learning topics */
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .topic {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .topic h3 {
+      font-size: 1.12rem;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .topic p {
+      color: var(--muted);
+    }
+
+    .about-panel,
+    .contact-panel {
+      max-width: 820px;
+    }
+
+    .about-panel p + p,
+    .contact-panel p + p {
+      margin-top: 16px;
+    }
+
     /* Footer */
 
     footer {
@@ -318,6 +353,10 @@
       .steps {
         grid-template-columns: 1fr 1fr;
       }
+
+      .topic-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     @media (max-width: 600px) {
@@ -326,6 +365,10 @@
       }
 
       .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .topic-grid {
         grid-template-columns: 1fr;
       }
 
@@ -556,50 +599,107 @@
       </div>
     </section>
 
-    <!-- PLACEHOLDER LEARNING SECTION -->
-    <section class="section-light" id="learn">
+    <!-- LEARN MEDICARE -->
+    <section id="learn">
       <div class="container">
 
         <div class="section-heading">
-          <h2>Want to understand Medicare first?</h2>
+          <h2>Want to look around first?</h2>
 
           <p>
-            That's completely okay. This part of the site will be for clear,
-            straightforward Medicare information you can look through at your
-            own pace.
+            You don't have to be ready to talk about plans. If you'd rather learn
+            first, you can start with the Medicare topics that are most relevant
+            to what you're trying to figure out.
+          </p>
+        </div>
+
+        <div class="topic-grid">
+          <div class="topic">
+            <h3>Turning 65</h3>
+            <p>Start with the basics: timing, enrollment, and what to expect as you become eligible for Medicare.</p>
+          </div>
+
+          <div class="topic">
+            <h3>Medicare Advantage vs. Medicare Supplement</h3>
+            <p>Understand the basic differences between these two ways of getting Medicare coverage.</p>
+          </div>
+
+          <div class="topic">
+            <h3>Medicare &amp; Medicaid</h3>
+            <p>See how the two programs can work together and why your options may look different if you have both.</p>
+          </div>
+
+          <div class="topic">
+            <h3>Extra Help</h3>
+            <p>Learn about the program that can help eligible people with Medicare prescription drug costs.</p>
+          </div>
+
+          <div class="topic">
+            <h3>Special Enrollment Periods</h3>
+            <p>Life changes can sometimes give you a chance to make changes outside the usual enrollment periods.</p>
+          </div>
+
+          <div class="topic">
+            <h3>Medicare Costs</h3>
+            <p>Get familiar with premiums, deductibles, copays, and other costs you may see with Medicare coverage.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ABOUT ERICA -->
+    <section class="section-light" id="about">
+      <div class="container">
+
+        <div class="about-panel">
+          <div class="section-heading">
+            <h2>About Erica</h2>
+          </div>
+
+          <p>
+            My name is Erica, and I'm an independent Medicare insurance broker.
+            I believe you should understand what you're choosing before anyone
+            asks you to make a decision.
+          </p>
+
+          <p>
+            My job is to help you sort through the information, answer your
+            questions, and look at the details that affect your situation.
+            If something doesn't make sense, we'll slow down and talk through it.
+          </p>
+
+          <p>
+            You don't need to know the right insurance terms before reaching out.
+            You can simply tell me what's going on, and we'll start there.
           </p>
         </div>
 
       </div>
     </section>
 
-    <!-- PLACEHOLDER ABOUT SECTION -->
-    <section id="about">
+    <!-- CONTACT -->
+    <section id="contact">
       <div class="container">
 
-        <div class="section-heading">
-          <h2>About Erica</h2>
+        <div class="contact-panel">
+          <div class="section-heading">
+            <h2>Still have questions?</h2>
 
-          <p>
-            We'll build this section next so you can learn a little more about
-            who I am, how I work, and what you can expect when you reach out.
-          </p>
-        </div>
+            <p>
+              That's okay. You don't need to know exactly what kind of help you
+              need before reaching out.
+            </p>
 
-      </div>
-    </section>
+            <p class="reassurance">
+              Tell me what's going on, and we'll take it from there.
+            </p>
+          </div>
 
-    <!-- PLACEHOLDER CONTACT SECTION -->
-    <section class="section-light" id="contact">
-      <div class="container">
-
-        <div class="section-heading">
-          <h2>Have a Medicare question?</h2>
-
-          <p>
-            You don't need to have everything figured out before reaching out.
-            Tell me what's going on, and we'll take it from there.
-          </p>
+          <div class="button-row">
+            <a class="btn btn-primary" href="mailto:erica@ericavninsurance.com">Email Erica</a>
+            <a class="btn btn-secondary" href="#learn">Learn About Medicare</a>
+          </div>
         </div>
 
       </div>
@@ -617,7 +717,7 @@
 
       <div>
         Medicare-related disclosures, licensing information, privacy information,
-        and required compliance language will be added before the site is publicly launched.
+        and required compliance language will be finalized before the site is publicly launched.
       </div>
 
     </div>
