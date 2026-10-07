@@ -69,11 +69,37 @@
       gap: 30px;
     }
 
-    .brand {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.brand-name {
+  display: block;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.brand-erica {
+  color: var(--text);
+}
+
+.brand-vn {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.brand-insurance {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+}
 
     .nav-links {
       display: flex;
@@ -292,7 +318,10 @@
 
   <header>
     <div class="container nav">
-      <div class="brand">EricaVN Insurance</div>
+      <div class="brand">
+  <span class="brand-name"><span class="brand-erica">Erica</span><span class="brand-vn">VN</span></span>
+  <span class="brand-insurance">INSURANCE</span>
+</div>
 
       <nav class="nav-links">
         <a href="#help">Medicare Help</a>
