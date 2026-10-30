@@ -2,6 +2,7 @@
   const search = document.getElementById('word-search');
   if (!search) return;
   const entries = [...document.querySelectorAll('.word-entry')];
+  const searchText = new Map(entries.map(entry => [entry, [...entry.children].filter(child => !child.classList.contains('word-related')).map(child => child.textContent).join(' ').toLocaleLowerCase()]));
   const groups = [...document.querySelectorAll('.word-group')];
   const count = document.getElementById('word-count');
   document.querySelector('.word-search').hidden = false;
@@ -9,16 +10,16 @@
     const query = search.value.trim().toLocaleLowerCase();
     let matches = 0;
     entries.forEach(entry => {
-      entry.hidden = !entry.textContent.toLocaleLowerCase().includes(query);
+      entry.hidden = !searchText.get(entry).includes(query);
       if (!entry.hidden) matches++;
     });
     groups.forEach(group => { group.hidden = ![...group.querySelectorAll('.word-entry')].some(entry => !entry.hidden); });
-    count.textContent = query ? `${matches} of ${entries.length} words match your search.` : `${entries.length} words explained.`;
+    count.textContent = query ? `Showing ${matches} of ${entries.length} words.` : `${entries.length} words explained.`;
     document.getElementById('no-word-results').hidden = matches !== 0;
   };
   search.addEventListener('input', filter);
   document.getElementById('clear-word-search').addEventListener('click', () => { search.value = ''; filter(); search.focus(); });
-  document.querySelectorAll('.word-category-links a, .word-index a').forEach(link => link.addEventListener('click', () => { search.value = ''; filter(); const index = link.closest('.word-alphabetical-index'); if (index) index.open = false; }));
+  document.querySelectorAll('.word-category-links a, .word-index a, .word-related a').forEach(link => link.addEventListener('click', () => { search.value = ''; filter(); const index = link.closest('.word-alphabetical-index'); if (index) index.open = false; }));
   // Only known local guides can become a return destination.
   const guides = {
     'turning-65':'Turning 65? Start here.', 'what-is-medicare':'What is Medicare?',
