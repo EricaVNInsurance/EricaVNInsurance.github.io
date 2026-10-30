@@ -18,7 +18,7 @@
   };
   search.addEventListener('input', filter);
   document.getElementById('clear-word-search').addEventListener('click', () => { search.value = ''; filter(); search.focus(); });
-  document.querySelectorAll('.word-category-links a').forEach(link => link.addEventListener('click', () => { search.value = ''; filter(); }));
+  document.querySelectorAll('.word-category-links a, .word-index a').forEach(link => link.addEventListener('click', () => { search.value = ''; filter(); const index = link.closest('.word-alphabetical-index'); if (index) index.open = false; }));
   // Only known local guides can become a return destination.
   const guides = {
     'turning-65':'Turning 65? Start here.', 'what-is-medicare':'What is Medicare?',
