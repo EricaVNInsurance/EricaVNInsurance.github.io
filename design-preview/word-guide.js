@@ -28,7 +28,7 @@
     'prescription-drug-coverage':'How does Medicare cover medicines?', 'medicare-costs':'What might I have to pay?',
     'extra-help':'What is Extra Help?', 'medicare-and-medicaid':'Can I have Medicare and Medicaid?',
     'compare-coverage':'How do my coverage choices compare?', 'plan-differences':'Why are Medicare plans different?',
-    'extra-benefits':'What about dental, vision, and hearing?', 'coverage-by-location':'Why does my address matter?',
+    'extra-benefits':'What extra benefits might a plan offer?', 'coverage-by-location':'Why does my address matter?',
     'enrollment-periods':'When can I sign up or change plans?'
   };
   const from = new URLSearchParams(window.location.search).get('from');
