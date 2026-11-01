@@ -16,13 +16,13 @@ Reviewed November 1, 2026. Source baseline: `fadeb949f38fc4912c437200a1aa9ffa543
 | Confirmation | Demo displayed a simulated submitted message. | Demo now says no request was sent. Prepared live code requires a validated server receipt before clearing entries or displaying success. |
 | Privacy | No linked notice for the form. | Add a truthful preview notice. Replace it with an operation-specific live notice before collection. |
 | Appointment scheduling | No provider account or URL configured. | Optional link is hidden. Prepared code shows it only after a live receipt and a configured HTTPS booking URL. No fake booking buttons or booking confirmations. |
-| Design | Both the saved preview and remote root source use cream/green; the brief describes a dark site. | Apply the requested dark treatment to the request page and its preview privacy page. Leave learning content and its theme intact. Resolve any site-wide theme change separately. |
+| Design | The owner clarified that the original cream/green design must be preserved. | Restored the form and preview privacy page to the shared cream/green palette. Keep these colors for future work. |
 | Existing conversion content | Contextual help links, benefits scenarios, Word Guide navigation and optional preparation already exist. | Preserve them. The two help-page header actions already go directly to the request form. |
 | SEO | Preview pages intentionally have `noindex, nofollow`. | Keep it while the site is a demo. Domain/canonical/indexing/sitemap/Search Console work belongs to the verified production launch, not the preview. |
 
 ## Phase 1 implementation
 
-- Dark, responsive form with name, U.S. phone, optional email, state, optional ZIP, general topic and optional time/time-zone preference.
+- Cream/green responsive form with name, U.S. phone, optional email, state, optional ZIP, general topic and optional time/time-zone preference.
 - Phone permission names Erica Vargas-Navarro of EricaVN Insurance. Optional email permission is separate. Neither is preselected.
 - Clear no-enrollment/no-coverage-change language; no health status, uploads, free text, SSN or Medicare-number fields.
 - Accessible labels, native required-field checks, focus management, error message and a duplicate-click guard.
@@ -96,7 +96,7 @@ Reviewed federal sources below as of November 1, 2026. This is an implementation
 7. Decide a documented retention schedule for inquiry/PTC/SOA records with applicable contracts/law. Do not automatically apply the call-recording period to every form record. Current federal marketing/sales call retention is at least six years: audio for years 1–3 and audio or complete accurate transcripts for years 4–6. Recording consent and state-law requirements need separate review before calls are recorded.
 8. Confirm that live success means durable storage; test private notifications without personal data. Verify backups, access denial and owner-controlled export/restore. Sanitize CSV exports against spreadsheet-formula injection; keep full-fidelity JSON/SQL exports protected.
 9. If scheduling is added, connect the actual professional calendar, test availability/cancellation/rescheduling/confirmations, and review any reminder permissions. Do not imply booking or SOA completion from a form submission.
-10. Resolve domain routing and the cream/green-versus-dark site-wide design discrepancy; then explicitly promote to the production address and complete SEO/indexing/Search Console work. No domain change, production-root replacement, real test submission or account purchase is part of this phase.
+10. Resolve domain routing, preserve the confirmed cream/green design, then explicitly promote to the production address and complete SEO/indexing/Search Console work. No domain change, production-root replacement, real test submission or account purchase is part of this phase.
 
 ## Sources
 
@@ -117,7 +117,7 @@ Reviewed federal sources below as of November 1, 2026. This is an implementation
 - `node design-preview/development/request-form.test.cjs`: 15 integration/guardrail checks passed, using mocked responses and fictional data only. Tests cover no-network preview, fail-closed setup, invalid phone, conditional time zone/email, verified receipt, failed receipt, preserved values, retry idempotency, duplicate clicks, unsafe scheduling URLs, rate limits and production preview settings.
 - Chrome desktop: completed preview with fictional contact details; preferred time without a time zone was blocked; selecting the zone allowed preview completion; confirmation explicitly denied sending/saving/booking.
 - Responsive browser iframes at 390 px and 320 px outer widths (375 px and 305 px content widths with scrollbars): no horizontal overflow; no controls extended past the narrow viewport. At phone width, selecting optional email permission without an address was blocked; fictional email allowed preview completion. This is a responsive layout check, not testing on physical iOS/Android devices.
-- Privacy notice and return-to-form links verified in the browser. Dark desktop and narrow layouts visually inspected.
+- Privacy notice and return-to-form links verified in the browser. Desktop and narrow layouts were visually inspected during Phase 1. The temporary dark theme was subsequently removed at the owner’s request; the original cream/green palette is authoritative.
 - Script syntax, local links/anchors, HTML structure, labels and frozen public preview configuration checked before commit. No production storage, notification, real appointment, DNS, call recording, carrier readiness or full 19-state legal review was verified.
 
 No real beneficiary records were used. A mocked receipt is not evidence of working production storage.
