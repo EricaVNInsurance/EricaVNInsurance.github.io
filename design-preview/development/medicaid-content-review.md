@@ -61,3 +61,11 @@ Recheck current names, eligibility policy changes, and state links during future
 - Desktop directory and guide inspected; both themes retained.
 - Responsive browser-frame content widths 305 px (directory) and 375 px (guide) showed no horizontal overflow. Physical phone testing was not performed.
 - New search JavaScript and changed word-guide JavaScript passed syntax checks.
+
+## Medicare-related assistance categories
+
+Expanded Medicare & Medicaid guide with QMB-only, QMB+, SLMB-only, SLMB+, QI/QI-1, QDWI, and other full-benefit dual/FBDE, with a prominent link from the Medicaid basics guide. Clarifies that these are not all state Medicaid pathways or a severity ranking. Plus means separate full Medicaid eligibility; QMB-only still has Medicare cost-sharing protections. SLMB+ and other full-benefit categories are not described as a blanket $0 guarantee for Medicare-only care. Added fictional comparisons, full/partial distinction, CMS reporting-code reference, Extra Help distinction, and rare Part B-ID variants. No dollar eligibility thresholds or individual eligibility determinations added.
+
+Primary sources: CMS Dual Eligibility Categories revised February 11, 2026 (https://www.cms.gov/files/document/dual-eligible-categories-final-update.pdf), Medicare.gov MSP guide, CMS QMB billing-protection page, CMS D-SNP eligibility page, Medicaid.gov dual-status reporting guidance, and SSA POMS HI 03001.005 (https://secure.ssa.gov/poms.nsf/lnx/0603001005). The newer CMS category document controls over older reporting-table simplifications on SLMB+ cost sharing. State notices and plan contracts remain controlling for individual coverage.
+
+Category expansion validation: local links, anchors and unique IDs passed; browser inspected seven category sections and a 305 px responsive content width with no horizontal overflow. Existing theme controls and shared styles are retained. No form data or live eligibility checks were used.
