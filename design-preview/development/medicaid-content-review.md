@@ -69,3 +69,11 @@ Expanded Medicare & Medicaid guide with QMB-only, QMB+, SLMB-only, SLMB+, QI/QI-
 Primary sources: CMS Dual Eligibility Categories revised February 11, 2026 (https://www.cms.gov/files/document/dual-eligible-categories-final-update.pdf), Medicare.gov MSP guide, CMS QMB billing-protection page, CMS D-SNP eligibility page, Medicaid.gov dual-status reporting guidance, and SSA POMS HI 03001.005 (https://secure.ssa.gov/poms.nsf/lnx/0603001005). The newer CMS category document controls over older reporting-table simplifications on SLMB+ cost sharing. State notices and plan contracts remain controlling for individual coverage.
 
 Category expansion validation: local links, anchors and unique IDs passed; browser inspected seven category sections and a 305 px responsive content width with no horizontal overflow. Existing theme controls and shared styles are retained. No form data or live eligibility checks were used.
+
+## What each category helps cover
+
+Added everyday coverage explanations to QMB-only, QMB+, SLMB-only, SLMB+, QI, QDWI, and other FBDE. Added a shared full-benefit service section covering doctor/hospital/testing services, necessary transportation, optional adult dental/vision/hearing, personal care and long-term care, and Part D coordination. Keeps partial-program help distinct from additional Medicaid services; no universal dental allowance, automatic caregiver approval, or blanket zero-cost promise. Added fictional comparison and exact-program coverage questions, with links from Medicaid basics.
+
+Sources rechecked November 1, 2026: CMS category document revised February 11, 2026; Medicare.gov Medicare Savings Programs and Medicaid; Medicaid.gov mandatory/optional benefits, transportation assurance, adult dental, and benefits overview. Medicare-covered cost-sharing protection remains explicit for QMB-only and QMB+. SLMB+ assistance is limited to applicable Medicaid-covered care/provider rules; other FBDE cost-sharing remains state dependent. No new eligibility thresholds or benefit quotes.
+
+Coverage expansion validation: seven everyday explanations confirmed; local links, new section anchors, and unique IDs passed. Browser verified the full-benefit heading and a 305 px responsive frame with no horizontal overflow. Existing shared dark/light styling retained.
