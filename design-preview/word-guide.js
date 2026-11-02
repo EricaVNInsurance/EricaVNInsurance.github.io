@@ -22,6 +22,7 @@
   document.querySelectorAll('.word-category-links a, .word-index a, .word-related a').forEach(link => link.addEventListener('click', () => { search.value = ''; filter(); const index = link.closest('.word-alphabetical-index'); if (index) index.open = false; }));
   // Only known local guides can become a return destination.
   const guides = {
+    'networks-and-travel':'Doctors, networks, and care in other states.',
     'medicaid':'What is Medicaid?', 'medicaid-by-state':'Find your state’s Medicaid program.',
     'turning-65':'Turning 65? Start here.', 'what-is-medicare':'What is Medicare?',
     'parts-of-medicare':'What do A, B, C, and D mean?', 'original-medicare':'What is Original Medicare?',
