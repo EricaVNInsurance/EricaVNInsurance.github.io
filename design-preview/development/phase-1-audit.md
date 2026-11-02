@@ -16,7 +16,7 @@ Reviewed November 1, 2026. Source baseline: `fadeb949f38fc4912c437200a1aa9ffa543
 | Confirmation | Demo displayed a simulated submitted message. | Demo now says no request was sent. Prepared live code requires a validated server receipt before clearing entries or displaying success. |
 | Privacy | No linked notice for the form. | Add a truthful preview notice. Replace it with an operation-specific live notice before collection. |
 | Appointment scheduling | No provider account or URL configured. | Optional link is hidden. Prepared code shows it only after a live receipt and a configured HTTPS booking URL. No fake booking buttons or booking confirmations. |
-| Design | The owner clarified that the original cream/green design must be preserved. | Restored the form and preview privacy page to the shared cream/green palette. Keep these colors for future work. |
+| Design | The owner clarified that the original cream/green design must be preserved. | Restored the form and preview privacy page to the shared cream/green palette. Cream/green remains the default, with an optional visitor-selected dark mode. |
 | Existing conversion content | Contextual help links, benefits scenarios, Word Guide navigation and optional preparation already exist. | Preserve them. The two help-page header actions already go directly to the request form. |
 | SEO | Preview pages intentionally have `noindex, nofollow`. | Keep it while the site is a demo. Domain/canonical/indexing/sitemap/Search Console work belongs to the verified production launch, not the preview. |
 
@@ -26,7 +26,7 @@ Reviewed November 1, 2026. Source baseline: `fadeb949f38fc4912c437200a1aa9ffa543
 - Phone permission names Erica Vargas-Navarro of EricaVN Insurance. Optional email permission is separate. Neither is preselected.
 - Clear no-enrollment/no-coverage-change language; no health status, uploads, free text, SSN or Medicare-number fields.
 - Accessible labels, native required-field checks, focus management, error message and a duplicate-click guard.
-- Preview runs without network or browser-storage writes and clears fictional entries after completion.
+- The form preview runs without network or browser-storage writes and clears fictional entries after completion.
 - Future live adapter posts only to a configured HTTPS endpoint with an exact approved origin. It omits cookies, rejects redirects, sets a timeout and waits for `accepted: true` plus a safe request reference.
 - Failed/unconfirmed submissions keep entries. Unchanged retries reuse an in-memory idempotency key; edited requests receive a new key. No automatic retry.
 - Optional scheduling link uses the owner's configured HTTPS URL, with no name, phone, email, health information or form answers in the URL or referrer.
@@ -121,3 +121,9 @@ Reviewed federal sources below as of November 1, 2026. This is an implementation
 - Script syntax, local links/anchors, HTML structure, labels and frozen public preview configuration checked before commit. No production storage, notification, real appointment, DNS, call recording, carrier readiness or full 19-state legal review was verified.
 
 No real beneficiary records were used. A mocked receipt is not evidence of working production storage.
+
+## Optional display theme
+
+Cream/green is the default, including on devices set to dark mode. The header switch offers an optional dark theme across preview pages. Only the explicit display preference is stored locally; blocked storage gracefully falls back to a per-page choice. The privacy preview describes this preference. Form data handling and live-submission configuration are unchanged.
+
+Theme verification: browser checked dark-to-light keyboard switching, persistence between homepage and form, and cross-frame preference synchronization. Responsive content widths 305 px and 785 px showed no horizontal overflow. Cream background and dark card colors were verified in computed styles.

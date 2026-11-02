@@ -1,0 +1,29 @@
+/* Cream and green stay the default. The optional theme covers every preview page. */
+.nav-links{margin-left:auto}
+.theme-toggle{flex-shrink:0;font:inherit;font-size:13px;font-weight:600;line-height:1.3;min-height:44px;padding:10px 13px;border:1px solid var(--border);border-radius:24px;background:var(--surface);color:var(--text);cursor:pointer}
+.theme-toggle:hover{border-color:var(--primary)}
+.theme-toggle:focus-visible{outline:3px solid var(--primary);outline-offset:4px}
+:root[data-theme="dark"]{--bg:#151a17;--surface:#1e2621;--text:#f4f5ef;--muted:#bbc5bc;--primary:#a5d6b5;--primary-dark:#c1e6cc;--soft-green:#25392c;--border:#435247;color-scheme:dark}
+[data-theme="dark"] header{background:rgba(21,26,23,.95)}
+[data-theme="dark"] .preview-note,[data-theme="dark"] footer{background:#1c251f;color:var(--muted)}
+[data-theme="dark"] .section-light,[data-theme="dark"] #about,[data-theme="dark"] .intro-band{background:#1b251f}
+[data-theme="dark"] .card,[data-theme="dark"] .mini,[data-theme="dark"] .request-card{background:var(--surface);border-color:var(--border)}
+[data-theme="dark"] .topic{border-color:var(--border)}
+[data-theme="dark"] .simple-box,[data-theme="dark"] .note,[data-theme="dark"] .callout,[data-theme="dark"] .page-contents,[data-theme="dark"] .guide-pager a,[data-theme="dark"] .word-tools,[data-theme="dark"] .return-context,[data-theme="dark"] .guide-next,[data-theme="dark"] .demo-banner,[data-theme="dark"] .confirmation-example,[data-theme="dark"] .call-preparation{background:var(--soft-green);border-color:var(--border)}
+[data-theme="dark"] .btn-primary,[data-theme="dark"] .nav-links>a:last-child{background:var(--primary);color:#163322}
+[data-theme="dark"] .btn-primary:hover,[data-theme="dark"] .nav-links>a:last-child:hover{background:var(--primary-dark)}
+[data-theme="dark"] .form-field input:not([type=radio]),[data-theme="dark"] .form-field select,[data-theme="dark"] .search-row input,[data-theme="dark"] .search-row button,[data-theme="dark"] .word-category-links a,[data-theme="dark"] .choice-option{background:var(--surface);color:var(--text);border-color:var(--border)}
+[data-theme="dark"] .form-field input::placeholder{color:var(--muted)}
+[data-theme="dark"] .choice-option:has(input:checked){background:var(--soft-green);border-color:var(--primary)}
+[data-theme="dark"] .demo-banner p,[data-theme="dark"] .draft-label{color:var(--muted)}
+[data-theme="dark"] .demo-badge{background:#34553e;color:#d8eedc}
+[data-theme="dark"] .required-note span,[data-theme="dark"] .form-field label>span[aria-hidden],[data-theme="dark"] .choice-field legend>span,[data-theme="dark"] .consent-panel h3>span{color:#ffb39a}
+[data-theme="dark"] .request-error{background:#40291f;color:#ffcfbb;border-color:#bc866b}
+[data-theme="dark"] .footer-bottom,[data-theme="dark"] .step,[data-theme="dark"] .word-group>h2,[data-theme="dark"] .word-alphabetical-index,[data-theme="dark"] .request-faq details,[data-theme="dark"] .call-preparation li,[data-theme="dark"] .preparation-note{border-color:var(--border)}
+[data-theme="dark"] .nav-links .learn-options a:hover,[data-theme="dark"] .nav-links .learn-options a:focus-visible{background:var(--soft-green);color:var(--primary)}
+[data-theme="dark"] .skip-link{background:var(--surface);color:var(--text)}
+[data-theme="dark"] a:focus-visible,[data-theme="dark"] summary:focus-visible,[data-theme="dark"] input:focus-visible,[data-theme="dark"] select:focus-visible,[data-theme="dark"] button:focus-visible{outline:3px solid var(--primary);outline-offset:4px}
+@media(max-width:960px){.nav-links{display:none}.mobile-nav{display:block}.theme-toggle{margin-left:auto}.mobile-nav summary{cursor:pointer;font-size:16px;padding:10px;min-height:44px}.mobile-menu{position:absolute;top:100%;left:0;width:100%;background:var(--bg);padding:16px 24px 24px;box-shadow:0 15px 20px #0000000d;border-bottom:1px solid var(--border)}.mobile-menu a{display:block;padding:12px;font-size:18px}}
+@media(max-width:400px){.nav{gap:8px}.theme-toggle{font-size:12px;padding:10px}.brand-erica{font-size:24px}.brand-sub{font-size:8px;letter-spacing:3px}}
+
+@media(min-width:701px) and (max-width:960px){.mobile-menu .learn-dropdown>summary{padding:12px;font-size:18px;min-height:48px}.mobile-menu .learn-options{position:static;min-width:0;margin:0 12px 8px 24px;box-shadow:none;border:0;border-left:2px solid var(--border);border-radius:0;padding:0 0 0 8px;background:transparent}.mobile-menu .learn-options a{font-size:17px;padding:10px 12px}}
