@@ -1,4 +1,4 @@
-/* Local guided preview. No network, analytics, storage, or AI service calls. */
+/* Guided mode is local. AI mode requires configured HTTPS backend + visitor opt-in. */
 (function () {
   'use strict';
   const topics = [
@@ -31,6 +31,42 @@
   const input = host.querySelector('textarea');
   const choices = host.querySelector('[data-chat-choices]');
   let previous = null;
+  const panel = host.querySelector('.lc-panel');
+  const launcher = host.querySelector('.lc-launcher');
+  const send = host.querySelector('[data-chat-send]');
+  const optIn = host.querySelector('[data-ai-opt-in]');
+  const config = window.ERICA_LEARNING_CHAT || {};
+  let aiReady = false;
+  try {
+    const endpoint = new URL(config.endpoint);
+    aiReady = config.aiEnabled === true && endpoint.protocol === 'https:' &&
+      endpoint.origin === config.approvedOrigin && !endpoint.username && !endpoint.password;
+  } catch (_) { /* Stay in local guided mode. */ }
+  let history = [], activeRequest = null, generation = 0;
+  function openChat(open) {
+    panel.hidden = !open;
+    launcher.setAttribute('aria-expanded', String(open));
+    if (open) input.focus({preventScroll:true}); else launcher.focus({preventScroll:true});
+  }
+  launcher.addEventListener('click', () => openChat(panel.hidden));
+  host.querySelector('.lc-close').addEventListener('click', () => openChat(false));
+  host.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) { e.preventDefault(); openChat(false); } });
+  if (aiReady) {
+    host.querySelector('[data-ai-consent]').hidden = false;
+    host.querySelector('[data-chat-connection]').textContent = 'AI answers are available when you choose “Use AI answers.”';
+  }
+  optIn.addEventListener('change', () => {
+    generation++; if (activeRequest) activeRequest.abort(); history = []; setBusy(false);
+    host.querySelectorAll('[data-ai-pending]').forEach(el => el.remove());
+    host.querySelector('[data-chat-mode]').textContent = aiReady && optIn.checked ? 'AI learning assistant · Check official sources' : 'Guided preview · Local topic matching';
+    send.textContent = aiReady && optIn.checked ? 'Ask a question' : 'Find a guide';
+    message('guide', optIn.checked ? 'AI mode is on. Your next question and recent AI conversation will be sent to OpenAI through our private service. Keep questions general and check the official sources linked in the answer.' : 'Guided mode is on. Future questions stay on this page. The AI conversation context has been cleared here.');
+  });
+  function setBusy(busy) {
+    send.disabled = busy; input.disabled = busy;
+    choices.querySelectorAll('button').forEach(b => { b.disabled = busy; });
+    log.setAttribute('aria-busy', String(busy));
+  }
   function node(tag, cls, text) {
     const el = document.createElement(tag);
     if (cls) el.className = cls;
@@ -55,6 +91,7 @@
     // Bound the visible session and avoid a growing page after repeated messages.
     while (log.children.length > 16) log.firstElementChild.remove();
     log.scrollTop = log.scrollHeight;
+    return item;
   }
   const handoffLinks = [['Open Erica’s contact form preview', 'request-medicare-help.html']];
   function handoff(text) {
@@ -63,6 +100,9 @@
   function respond(value, chosen) {
     const result = chosen ? {kind: 'topic', topics: [chosen]} : classify(value, previous);
     message('visitor', result.kind === 'private' ? '[Contact or identifier details omitted]' : value);
+    if (aiReady && optIn.checked && !['private', 'urgent', 'handoff', 'specific'].includes(result.kind)) {
+      askAI(value); return;
+    }
     if (result.kind === 'private') message('guide', 'Please keep identifying information out of this preview. It does not need your name, phone, email, Medicare number, or Social Security number. Try a general question, such as “I’m retiring soon.”');
     else if (result.kind === 'urgent') message('guide', 'This guide cannot help with an emergency. If you may be in immediate danger or need urgent medical help, call 911. For non-urgent medical concerns, contact a healthcare professional.');
     else if (result.kind === 'handoff') handoff('You can ask Erica for help with your situation.');
@@ -74,7 +114,41 @@
       result.topics.forEach(t => message('guide', t.text, t.links));
     }
   }
+  async function askAI(value) {
+    const current = ++generation;
+    const controller = new AbortController(); activeRequest = controller;
+    setBusy(true);
+    const pending = message('guide', 'Checking official sources…');
+    pending.dataset.aiPending = 'true';
+    const timeout = setTimeout(() => controller.abort(), 40000);
+    try {
+      const response = await fetch(config.endpoint, {
+        method: 'POST', credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer',
+        headers: {'Content-Type':'application/json'}, signal: controller.signal,
+        body: JSON.stringify({messages: [...history.slice(-6).map(m => ({role:m.role,content:m.content.slice(0,1200)})), {role:'user', content:value}], consentVersion:'learning-ai-v1'})
+      });
+      if (!response.ok) throw new Error('unavailable');
+      const data = await response.json();
+      if (current !== generation) return;
+      if (typeof data.answer !== 'string' || !data.answer.trim() || data.answer.length > 6000) throw new Error('invalid');
+      const links = (Array.isArray(data.sources) ? data.sources : []).filter(s => {
+        try { const u = new URL(s.url); return u.protocol === 'https:' && ['medicare.gov','cms.gov','ssa.gov','medicaid.gov','ecfr.gov'].some(d => u.hostname === d || u.hostname.endsWith('.'+d)); } catch (_) { return false; }
+      }).slice(0,6).map(s => [String(s.title || 'Official source').slice(0,160), s.url]);
+      pending.remove();
+      message('guide', data.answer, links);
+      if (data.handoff) handoff('This question needs a person to review your situation.');
+      history = [...history, {role:'user',content:value}, {role:'assistant',content:data.answer}].slice(-6);
+    } catch (_) {
+      if (current !== generation) return;
+      pending.remove();
+      message('guide', 'AI answers are unavailable right now. No answer was generated here. You can turn off “Use AI answers” to browse guides, try again, or ask Erica for help.');
+    } finally {
+      clearTimeout(timeout);
+      if (current === generation) { activeRequest = null; setBusy(false); input.focus({preventScroll:true}); }
+    }
+  }
   function reset() {
+    generation++; if (activeRequest) activeRequest.abort(); activeRequest = null; history = []; setBusy(false);
     log.replaceChildren(); input.value = ''; previous = null;
     message('guide', 'Hi! What would you like to understand about Medicare? Tell me generally what’s going on, or choose a topic. I’ll help you find a starting point in the learning center.');
   }
