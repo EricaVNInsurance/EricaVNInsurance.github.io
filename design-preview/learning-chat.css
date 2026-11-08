@@ -2,3 +2,33 @@
 
 /* Topic suggestions stay available without crowding out replies. */
 .lc-topic-menu{margin-bottom:10px}.lc-topic-menu>summary{display:list-item;cursor:pointer;color:var(--primary);font-size:13px;font-weight:600;min-height:36px;padding:6px 0;list-style-position:inside}.lc-topic-menu>summary:focus-visible{outline:3px solid var(--primary);outline-offset:2px;border-radius:4px}.lc-topic-menu[open] .lc-choices{margin-top:8px;margin-bottom:4px}.lc-topic-menu:not([open]) .lc-choices{display:none}
+
+/* Compact message composer: leave most of the panel for the conversation. */
+.lc-controls{padding:12px 14px 10px;max-height:none;overflow:visible}
+.lc-form{position:relative}
+.lc-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.lc-composer{display:flex;align-items:flex-end;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:5px}
+.lc-composer:focus-within{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+.lc-form .lc-composer textarea{flex:1;width:0;min-width:0;min-height:44px;height:44px;max-height:120px;resize:none;border:0;border-radius:12px;padding:10px 9px;line-height:24px;outline:none}
+.lc-form .lc-composer textarea:focus-visible{outline:none}
+.lc-send{display:grid;place-items:center;flex-shrink:0;width:42px;height:42px;min-height:42px;background:var(--primary);color:var(--surface);border:0;border-radius:50%;cursor:pointer}
+.lc-send:disabled{opacity:.5;cursor:wait}
+[data-theme=dark] .lc-send{color:#163322}
+.lc-minirow{display:flex;align-items:center;gap:16px;margin-top:5px;min-height:34px}
+.lc-topic-menu{position:static;margin:0}
+.lc-topic-menu>summary{list-style:none;display:flex;align-items:center;gap:6px;min-height:34px;padding:5px 0;font-size:12px;line-height:1.4;font-weight:600;color:var(--primary)}
+.lc-topic-menu>summary::before{content:'+';font-size:16px;font-weight:400}
+.lc-topic-menu[open]>summary::before{content:'−'}
+.lc-topic-menu>summary::-webkit-details-marker,.lc-info>summary::-webkit-details-marker{display:none}
+.lc-topic-menu .lc-choices{position:absolute;bottom:85px;left:0;right:0;max-height:190px;overflow:auto;padding:12px!important;margin:0!important;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 -6px 30px #0002;z-index:2}
+.lc-minirow>.lc-handoff{background:none;color:var(--primary);border:0;font:inherit;font-size:12px;font-weight:650;min-height:34px;padding:5px 0;cursor:pointer}
+.lc-info{margin-left:auto}
+.lc-info>summary{display:grid;place-items:center;list-style:none;width:34px;height:34px;color:var(--muted);font-size:19px;cursor:pointer}
+.lc-info>summary:focus-visible{outline:3px solid var(--primary);outline-offset:2px;border-radius:8px}
+.lc-info-content{position:absolute;bottom:85px;left:0;right:0;max-height:230px;overflow:auto;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 -6px 30px #0002;z-index:3;color:var(--text);font-size:12px;line-height:1.6}
+.lc-info-content p{margin:8px 0 0}
+.lc-privacy{font-size:11px;line-height:1.4;color:var(--muted);margin:0}
+.lc-keyboard{display:none;font-size:10px;line-height:1.4;color:var(--muted);margin:5px 0 0}
+.lc-composer:focus-within+.lc-keyboard{display:block}
+.lc-ai-consent p{margin-bottom:8px}
+@media(max-width:480px){.lc-controls{padding:10px 12px 9px}.lc-minirow{gap:16px}.lc-topic-menu .lc-choices,.lc-info-content{bottom:80px}}
