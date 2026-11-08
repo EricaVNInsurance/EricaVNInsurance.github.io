@@ -157,6 +157,11 @@
     b.addEventListener('click', () => { respond(t.label, t); input.focus({preventScroll:true}); });
     choices.append(b);
   });
+  input.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.shiftKey || e.isComposing || e.keyCode === 229) return;
+    e.preventDefault();
+    if (!send.disabled) form.requestSubmit();
+  });
   form.addEventListener('submit', e => {
     e.preventDefault(); const value = input.value.trim(); if (!value) { input.focus(); return; }
     input.value = ''; respond(value); input.focus({preventScroll:true});
