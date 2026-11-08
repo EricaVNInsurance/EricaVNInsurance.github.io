@@ -54,13 +54,20 @@
   const form = host.querySelector('form');
   const input = host.querySelector('textarea');
   const choices = host.querySelector('[data-chat-choices]');
+  function resizeInput() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(120, Math.max(44, input.scrollHeight)) + 'px';
+  }
+  input.addEventListener('input', resizeInput);
   const topicMenu = host.querySelector('[data-chat-topics]');
   const topicSummary = topicMenu.querySelector('summary');
   function updateTopicLabel() {
     const label = awaitingCoverageType ? 'reply options' : 'topics';
-    topicSummary.textContent = (topicMenu.open ? 'Hide ' : 'Show ') + label;
+    topicSummary.textContent = topicMenu.open ? 'Hide ' + label : (awaitingCoverageType ? 'Reply options' : 'Topics');
   }
-  topicMenu.addEventListener('toggle', updateTopicLabel);
+  const infoMenu = host.querySelector('.lc-info');
+  topicMenu.addEventListener('toggle', () => { updateTopicLabel(); if (topicMenu.open) infoMenu.open = false; });
+  infoMenu.addEventListener('toggle', () => { if (infoMenu.open) topicMenu.open = false; });
   let previous = null;
   let awaitingCoverageType = false;
   const panel = host.querySelector('.lc-panel');
@@ -91,7 +98,7 @@
     generation++; if (activeRequest) activeRequest.abort(); history = []; setBusy(false);
     host.querySelectorAll('[data-ai-pending]').forEach(el => el.remove());
     host.querySelector('[data-chat-mode]').textContent = aiReady && optIn.checked ? 'AI learning assistant · Check official sources' : 'Guided preview · Local topic matching';
-    send.textContent = aiReady && optIn.checked ? 'Ask a question' : 'Find a guide';
+    send.setAttribute('aria-label', aiReady && optIn.checked ? 'Send question to AI' : 'Send question');
     message('guide', optIn.checked ? 'AI mode is on. Your next question and recent AI conversation will be sent to OpenAI through our private service. Keep questions general and check the official sources linked in the answer.' : 'Guided mode is on. Future questions stay on this page. The AI conversation context has been cleared here.');
   });
   function setBusy(busy) {
@@ -123,6 +130,7 @@
     // Bound the visible session and avoid a growing page after repeated messages.
     while (log.children.length > 16) log.firstElementChild.remove();
     log.scrollTop = log.scrollHeight;
+    requestAnimationFrame(() => { log.scrollTop = log.scrollHeight; });
     return item;
   }
   const handoffLinks = [['Open Erica’s contact form preview', 'request-medicare-help.html']];
@@ -130,7 +138,7 @@
     message('guide', text + ' The contact form is currently a demonstration and does not send a request yet. No chat text is carried into the form.', handoffLinks);
   }
   function respond(value, chosen) {
-    topicMenu.open = false;
+    topicMenu.open = false; infoMenu.open = false;
     const result = chosen ? {kind: 'topic', topics: [chosen]} : classify(value, previous);
     message('visitor', result.kind === 'private' ? '[Contact or identifier details omitted]' : value);
     if (result.kind === 'unknown_coverage') {
@@ -167,7 +175,7 @@
     else if (result.kind === 'urgent') message('guide', 'This guide cannot help with an emergency. If you may be in immediate danger or need urgent medical help, call 911. For non-urgent medical concerns, contact a healthcare professional.');
     else if (result.kind === 'handoff') handoff('You can ask Erica for help with your situation.');
     else if (result.kind === 'specific') handoff('That question requires a review of your individual situation or coverage. This preview cannot determine eligibility, recommend a plan, or verify a benefit, provider, prescription, or claim. For an existing claim or bill, contact your plan or billing provider.');
-    else if (result.kind === 'unknown') message('guide', awaitingCoverageType ? 'No problem. Which sounds closest: coverage through a job, a Medicare plan, Medicaid, or “I’m not sure”? You can open “Show reply options” to choose an answer.' : 'Let’s narrow it down together. Are you getting started with Medicare, dealing with a coverage change, or trying to understand costs? This guided preview handles common situations; live AI answers aren’t connected yet.');
+    else if (result.kind === 'unknown') message('guide', awaitingCoverageType ? 'No problem. Which sounds closest: coverage through a job, a Medicare plan, Medicaid, or “I’m not sure”? You can open “Reply options” to choose an answer.' : 'Let’s narrow it down together. Are you getting started with Medicare, dealing with a coverage change, or trying to understand costs? This guided preview handles common situations; live AI answers aren’t connected yet.');
     else if (result.kind === 'followup') message('guide', 'I can point you to the guide for more detail, but this preview cannot answer a deeper follow-up yet. You can also choose another topic or ask Erica for help.', result.topics[0].links);
     else {
       previous = result.topics[0];
@@ -209,7 +217,7 @@
   }
   function reset() {
     generation++; if (activeRequest) activeRequest.abort(); activeRequest = null; history = []; setBusy(false);
-    log.replaceChildren(); input.value = ''; previous = null; awaitingCoverageType = false; topicMenu.open = false; renderTopics();
+    log.replaceChildren(); input.value = ''; resizeInput(); previous = null; awaitingCoverageType = false; topicMenu.open = false; renderTopics();
     message('guide', 'Hi, welcome! What brings you in today?');
   }
   function renderTopics() {
@@ -237,7 +245,7 @@
   }, true);
   form.addEventListener('submit', e => {
     e.preventDefault(); const value = input.value.trim(); if (!value) { input.focus(); return; }
-    input.value = ''; respond(value); input.focus({preventScroll:true});
+    input.value = ''; resizeInput(); respond(value); input.focus({preventScroll:true});
   });
   host.querySelector('[data-chat-reset]').addEventListener('click', () => { reset(); input.focus({preventScroll:true}); });
   host.querySelector('[data-chat-handoff]').addEventListener('click', () => { handoff('Let’s make it easier to get personal assistance.'); input.focus({preventScroll:true}); });
