@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const {classify, lossReply} = require('../learning-chat.js');
+const {classify, lossReply, normalizeInput} = require('../learning-chat.js');
 const cases = [
   ['I am retiring soon', 'topic', 'start'],
   ['I see doctors in two states', 'topic', 'network'],
@@ -32,4 +32,16 @@ assert.match(lossReply('A Medicare plan').text, /what coverage is currently acti
 assert.match(lossReply('I’m not sure').text, /don’t need to know all/);
 assert.equal(lossReply('I do not want to discuss that'), null);
 assert.equal(classify('I lost coverage; my SSN is 123-45-6789').kind, 'private');
-console.log('25 guided-chat routing, conversation and privacy checks passed.');
+assert.equal(classify('idk what coverage i have lol').kind, 'unknown_coverage');
+assert.equal(classify('I dont know what insurance I have').kind, 'unknown_coverage');
+assert.equal(classify('What coverage do I have?').kind, 'unknown_coverage');
+assert.equal(classify('tbh im not sure what plan i have rn').kind, 'unknown_coverage');
+assert.equal(classify('idk').kind, 'unsure');
+assert.equal(classify('idc lol').kind, 'unsure');
+assert.equal(classify('lmao i lost my coverage').kind, 'coverage_loss');
+assert.equal(classify('lol what is a deductible').topics[0].id, 'cost');
+assert.equal(classify('idk my SSN is 123-45-6789').kind, 'private');
+assert.ok(lossReply('idk lol'));
+assert.equal(normalizeInput('LOL lmao'), '');
+assert.equal(classify('I know what coverage I have').kind, 'topic');
+console.log('37 guided-chat language, conversation and privacy checks passed.');
