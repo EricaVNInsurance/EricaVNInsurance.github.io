@@ -39,6 +39,13 @@
   const form = host.querySelector('form');
   const input = host.querySelector('textarea');
   const choices = host.querySelector('[data-chat-choices]');
+  const topicMenu = host.querySelector('[data-chat-topics]');
+  const topicSummary = topicMenu.querySelector('summary');
+  function updateTopicLabel() {
+    const label = awaitingCoverageType ? 'reply options' : 'topics';
+    topicSummary.textContent = (topicMenu.open ? 'Hide ' : 'Show ') + label;
+  }
+  topicMenu.addEventListener('toggle', updateTopicLabel);
   let previous = null;
   let awaitingCoverageType = false;
   const panel = host.querySelector('.lc-panel');
@@ -108,6 +115,7 @@
     message('guide', text + ' The contact form is currently a demonstration and does not send a request yet. No chat text is carried into the form.', handoffLinks);
   }
   function respond(value, chosen) {
+    topicMenu.open = false;
     const result = chosen ? {kind: 'topic', topics: [chosen]} : classify(value, previous);
     message('visitor', result.kind === 'private' ? '[Contact or identifier details omitted]' : value);
     if (result.kind === 'coverage_loss') {
@@ -135,7 +143,7 @@
     else if (result.kind === 'urgent') message('guide', 'This guide cannot help with an emergency. If you may be in immediate danger or need urgent medical help, call 911. For non-urgent medical concerns, contact a healthcare professional.');
     else if (result.kind === 'handoff') handoff('You can ask Erica for help with your situation.');
     else if (result.kind === 'specific') handoff('That needs a check of your actual situation or coverage. This preview cannot determine eligibility, recommend a plan, or verify a benefit, provider, prescription, or claim. For an existing claim or bill, contact your plan or billing provider.');
-    else if (result.kind === 'unknown') message('guide', awaitingCoverageType ? 'No problem. Which sounds closest: coverage through a job, a Medicare plan, Medicaid, or “I’m not sure”? You can use one of the buttons below.' : 'Let’s narrow it down together. Are you getting started with Medicare, dealing with a coverage change, or trying to understand costs? This guided preview handles common situations; live AI answers aren’t connected yet.');
+    else if (result.kind === 'unknown') message('guide', awaitingCoverageType ? 'No problem. Which sounds closest: coverage through a job, a Medicare plan, Medicaid, or “I’m not sure”? You can open “Show reply options” to choose an answer.' : 'Let’s narrow it down together. Are you getting started with Medicare, dealing with a coverage change, or trying to understand costs? This guided preview handles common situations; live AI answers aren’t connected yet.');
     else if (result.kind === 'followup') message('guide', 'I can point you to the guide for more detail, but this preview cannot answer a deeper follow-up yet. You can also choose another topic or ask Erica for help.', result.topics[0].links);
     else {
       previous = result.topics[0];
@@ -177,10 +185,11 @@
   }
   function reset() {
     generation++; if (activeRequest) activeRequest.abort(); activeRequest = null; history = []; setBusy(false);
-    log.replaceChildren(); input.value = ''; previous = null; awaitingCoverageType = false; renderTopics();
+    log.replaceChildren(); input.value = ''; previous = null; awaitingCoverageType = false; topicMenu.open = false; renderTopics();
     message('guide', 'Hi, welcome! What brings you here today? Maybe you’re getting ready to retire, lost coverage, or just want Medicare to make a little more sense. Tell me generally what’s going on, and we’ll find a starting point together.');
   }
   function renderTopics() {
+  updateTopicLabel();
   choices.replaceChildren();
   topics.forEach(t => {
     const b = node('button', 'lc-chip', t.label); b.type = 'button';
@@ -189,6 +198,7 @@
   });
   }
   function renderLossChoices() {
+    updateTopicLabel();
     choices.replaceChildren();
     ['Through a job', 'A Medicare plan', 'Medicaid', 'I’m not sure'].forEach(label => {
       const b = node('button','lc-chip',label); b.type = 'button';
