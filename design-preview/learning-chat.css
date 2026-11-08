@@ -32,3 +32,22 @@
 .lc-composer:focus-within+.lc-keyboard{display:block}
 .lc-ai-consent p{margin-bottom:8px}
 @media(max-width:480px){.lc-controls{padding:10px 12px 9px}.lc-minirow{gap:16px}.lc-topic-menu .lc-choices,.lc-info-content{bottom:80px}}
+
+/* Slim controls, readable messages: reduce chrome rather than shrinking replies. */
+.lc-panel{height:min(760px,calc(100dvh - 120px))}
+.lc-toolbar{padding:7px 14px;min-height:56px}
+.lc-toolbar strong{font-size:15px}
+.lc-toolbar-actions{gap:2px}
+.lc-reset{font-size:23px;text-decoration:none;min-width:36px;min-height:36px;padding:2px}
+.lc-close{min-width:36px;min-height:36px;padding:2px}
+.lc-controls{padding:8px 10px 5px}
+.lc-composer{padding:2px;border-radius:15px}
+.lc-minirow{gap:10px;min-height:28px;margin-top:2px}
+.lc-topic-menu>summary,.lc-minirow>.lc-handoff{min-height:28px;padding:3px 0;font-size:11px}
+.lc-minirow .lc-privacy{margin:0 0 0 auto;font-size:10px;line-height:1.3;white-space:nowrap}
+.lc-info{margin-left:0}
+.lc-info>summary{width:25px;height:28px;font-size:17px}
+.lc-keyboard,.lc-composer:focus-within+.lc-keyboard{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;display:block}
+.lc-info-content .lc-mode{margin-top:7px}
+.lc-topic-menu .lc-choices,.lc-info-content{bottom:34px}
+@media(max-width:480px){.lc-panel{height:calc(100dvh - 90px)}.lc-toolbar{padding:7px 10px}.lc-controls{padding:7px 8px 4px}.lc-minirow{gap:8px}.lc-toolbar strong{font-size:14px}.lc-minirow .lc-privacy{font-size:9px}.lc-info>summary{width:22px}}
