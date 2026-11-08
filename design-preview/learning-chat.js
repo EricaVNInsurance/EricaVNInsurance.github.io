@@ -13,7 +13,9 @@
     const text = String(input).slice(0, 600);
     if (/\b(911|emergency|chest pain|can.?t breathe|cannot breathe|stroke|overdose|kill myself|suicid\w*)\b/i.test(text)) return { kind: 'urgent' };
     if (/\b\d{3}[- .]?\d{2}[- .]?\d{4}\b|\b\d{10,}\b|\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b|\b(?:\d[ -]?){11,}\b/i.test(text) || /\b(ssn|social security number|medicare (?:number|id)|member (?:number|id)|date of birth|my address|my phone)\b/i.test(text)) return { kind: 'private' };
+    if (/\b(lost|losing|lose)\b.{0,45}\b(coverage|insurance|medicaid|plan)\b|\b(coverage|insurance|medicaid|plan)\b.{0,35}\b(ended|ending|cancelled|canceled|terminated|stopped)\b|\b(no longer have|have no)\b.{0,20}\b(coverage|insurance)\b/i.test(text)) return { kind: 'coverage_loss' };
     if (/\b(erica|human|agent|person|call me|contact|someone|representative)\b/i.test(text)) return { kind: 'handoff' };
+    if (/^(hi|hello|hey|good (morning|afternoon|evening))[!.\s]*$/i.test(text.trim())) return {kind:'greeting'};
     if (/\b(covered|cover my|eligible|qualify|which plan|best plan|recommend a plan|will .* pay|my claim|denied|denial|appeal)\b/i.test(text)) return { kind: 'specific' };
     const matches = topics.filter(t => t.terms.test(text));
     // Prefer specific topics to the broad Medicare-basics match; show at most two.
@@ -22,7 +24,14 @@
     if (/\b(more|explain|yes|that|this)\b/i.test(text) && previous) return { kind: 'followup', topics: [previous] };
     return { kind: 'unknown' };
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = { classify, topics };
+  function lossReply(text) {
+    if (/\b(job|employer|work|retir\w*|cobra|spouse)\b/i.test(text)) return {text:'Thanks—that helps. Let’s focus on the coverage you had through work. A useful first step is to confirm its end date with the employer or benefits administrator. Whether you already have Medicare also matters. Medicare.gov has a guide to this transition; Erica can help you review how it applies to your situation.',links:[['Medicare.gov: working or retiring', 'https://www.medicare.gov/basics/get-started-with-medicare/medicare-basics/working-past-65'],['Understand enrollment periods','enrollment-periods.html']]};
+    if (/\b(medicaid|qmb|slmb|fbde)\b/i.test(text)) return {text:'Thanks for explaining. Losing Medicaid can be confusing, especially if you also have Medicare. Keep the notice showing what changed and when; you don’t need to upload it here. Start with the explanation of how Medicare and Medicaid work together, and ask your state Medicaid office about the reason for the change. Erica can help you review the Medicare questions.',links:[['Medicare & Medicaid','medicare-and-medicaid.html'],['Find your state Medicaid office','medicaid-by-state.html'],['Medicare.gov: coverage changes','https://www.medicare.gov/basics/get-started-with-medicare/get-more-coverage/joining-a-plan/special-enrollment-periods']]};
+    if (/\b(medicare|advantage|drug|part d)\b/i.test(text)) return {text:'Got it—you mean a Medicare plan. The notice from the plan is a helpful starting point: what ended, why, and on what date? You don’t need to paste the notice here. Contact the plan or Medicare to confirm what coverage is currently active, and ask Erica for help reviewing the next steps. I can explain the general process, but can’t confirm an enrollment window for you here.',links:[['Medicare.gov: coverage changes','https://www.medicare.gov/basics/get-started-with-medicare/get-more-coverage/joining-a-plan/special-enrollment-periods'],['Understand enrollment periods','enrollment-periods.html']]};
+    if (/\b(not sure|don.?t know|unsure|something else|other)\b/i.test(text)) return {text:'That’s okay—you don’t need to know all the insurance terms. Start with the name of the type of coverage on your notice, or contact whoever sent it to ask what ended. Keep any account or member numbers private. You can also ask Erica for help figuring out where to start.',links:[['Compare coverage types','compare-coverage.html']]};
+    return null;
+  }
+  if (typeof module !== 'undefined' && module.exports) module.exports = { classify, topics, lossReply };
   if (typeof document === 'undefined') return;
   const host = document.getElementById('learning-chat');
   if (!host) return;
@@ -31,6 +40,7 @@
   const input = host.querySelector('textarea');
   const choices = host.querySelector('[data-chat-choices]');
   let previous = null;
+  let awaitingCoverageType = false;
   const panel = host.querySelector('.lc-panel');
   const launcher = host.querySelector('.lc-launcher');
   const send = host.querySelector('[data-chat-send]');
@@ -100,6 +110,24 @@
   function respond(value, chosen) {
     const result = chosen ? {kind: 'topic', topics: [chosen]} : classify(value, previous);
     message('visitor', result.kind === 'private' ? '[Contact or identifier details omitted]' : value);
+    if (result.kind === 'coverage_loss') {
+      const knownType = lossReply(value);
+      if (knownType) { awaitingCoverageType = false; renderTopics(); message('guide', 'I’m sorry you’re dealing with that. ' + knownType.text, knownType.links); return; }
+      awaitingCoverageType = true;
+      message('guide', 'I’m sorry you’re dealing with that. Let’s take it one step at a time. Was the coverage through a job, a Medicare plan, Medicaid, or are you not sure? You don’t need to share any personal details.');
+      renderLossChoices(); return;
+    }
+    if (awaitingCoverageType && !['private','urgent','handoff','specific'].includes(result.kind) && !chosen) {
+      const reply = lossReply(value);
+      if (reply) {
+        awaitingCoverageType = false; renderTopics();
+        message('guide', reply.text, reply.links);
+        message('guide', 'Would you like help with another general question? You can also choose “Ask Erica for help.”');
+        return;
+      }
+    }
+    if (chosen) { awaitingCoverageType = false; renderTopics(); }
+    if (result.kind === 'greeting') { message('guide', 'Hi! I’m glad you’re here. What’s been going on with your coverage, or what would you like to understand? We can start with just one question.'); return; }
     if (aiReady && optIn.checked && !['private', 'urgent', 'handoff', 'specific'].includes(result.kind)) {
       askAI(value); return;
     }
@@ -107,7 +135,7 @@
     else if (result.kind === 'urgent') message('guide', 'This guide cannot help with an emergency. If you may be in immediate danger or need urgent medical help, call 911. For non-urgent medical concerns, contact a healthcare professional.');
     else if (result.kind === 'handoff') handoff('You can ask Erica for help with your situation.');
     else if (result.kind === 'specific') handoff('That needs a check of your actual situation or coverage. This preview cannot determine eligibility, recommend a plan, or verify a benefit, provider, prescription, or claim. For an existing claim or bill, contact your plan or billing provider.');
-    else if (result.kind === 'unknown') message('guide', 'I haven’t found a clear topic match. This first version matches questions to learning-center guides; it does not generate AI answers or search official sources live. Choose a topic below, try a shorter general question, or use “Ask Erica for help.”');
+    else if (result.kind === 'unknown') message('guide', awaitingCoverageType ? 'No problem. Which sounds closest: coverage through a job, a Medicare plan, Medicaid, or “I’m not sure”? You can use one of the buttons below.' : 'Let’s narrow it down together. Are you getting started with Medicare, dealing with a coverage change, or trying to understand costs? This guided preview handles common situations; live AI answers aren’t connected yet.');
     else if (result.kind === 'followup') message('guide', 'I can point you to the guide for more detail, but this preview cannot answer a deeper follow-up yet. You can also choose another topic or ask Erica for help.', result.topics[0].links);
     else {
       previous = result.topics[0];
@@ -149,19 +177,30 @@
   }
   function reset() {
     generation++; if (activeRequest) activeRequest.abort(); activeRequest = null; history = []; setBusy(false);
-    log.replaceChildren(); input.value = ''; previous = null;
-    message('guide', 'Hi! What would you like to understand about Medicare? Tell me generally what’s going on, or choose a topic. I’ll help you find a starting point in the learning center.');
+    log.replaceChildren(); input.value = ''; previous = null; awaitingCoverageType = false; renderTopics();
+    message('guide', 'Hi, welcome! What brings you here today? Maybe you’re getting ready to retire, lost coverage, or just want Medicare to make a little more sense. Tell me generally what’s going on, and we’ll find a starting point together.');
   }
+  function renderTopics() {
+  choices.replaceChildren();
   topics.forEach(t => {
     const b = node('button', 'lc-chip', t.label); b.type = 'button';
     b.addEventListener('click', () => { respond(t.label, t); input.focus({preventScroll:true}); });
     choices.append(b);
   });
+  }
+  function renderLossChoices() {
+    choices.replaceChildren();
+    ['Through a job', 'A Medicare plan', 'Medicaid', 'I’m not sure'].forEach(label => {
+      const b = node('button','lc-chip',label); b.type = 'button';
+      b.addEventListener('click', () => { respond(label); input.focus({preventScroll:true}); });
+      choices.append(b);
+    });
+  }
   input.addEventListener('keydown', e => {
     if (e.key !== 'Enter' || e.shiftKey || e.isComposing || e.keyCode === 229) return;
     e.preventDefault();
     if (!send.disabled) form.requestSubmit();
-  });
+  }, true);
   form.addEventListener('submit', e => {
     e.preventDefault(); const value = input.value.trim(); if (!value) { input.focus(); return; }
     input.value = ''; respond(value); input.focus({preventScroll:true});
