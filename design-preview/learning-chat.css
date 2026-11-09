@@ -58,3 +58,9 @@
 .lc-resize-grip{position:absolute;top:0;left:0;width:24px;height:24px;padding:0;border:0;background:var(--surface);color:var(--muted);font-size:17px;line-height:24px;cursor:nwse-resize;touch-action:none;border-radius:20px 0 8px 0;z-index:4}
 .lc-resize-grip:focus-visible{outline-offset:-3px!important}
 @media(max-width:480px){.lc-panel{width:calc(100vw - 24px);height:min(var(--lc-height,500px),calc(100dvh - 100px))}.lc-resize-grip{display:none}.lc-toolbar strong{font-size:13px}.lc-toolbar-actions{gap:0}.lc-size-toggle,.lc-reset,.lc-close{min-width:32px}}
+
+/* Reserve a corner for the resize handle, including at minimum width. */
+.lc-toolbar{padding-left:30px}
+.lc-toolbar>div:first-child{min-width:0}
+.lc-toolbar-actions{flex-shrink:0}
+@media(max-width:480px){.lc-toolbar{padding-left:10px}}
