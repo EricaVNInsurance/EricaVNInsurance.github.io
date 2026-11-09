@@ -71,6 +71,61 @@
   let previous = null;
   let awaitingCoverageType = false;
   const panel = host.querySelector('.lc-panel');
+
+  // Keep sizing controls shared across every page that uses this widget.
+  const sizeButton = document.createElement('button');
+  sizeButton.type = 'button';
+  sizeButton.className = 'lc-size-toggle';
+  sizeButton.textContent = '⤢';
+  sizeButton.setAttribute('aria-label', 'Make chat larger');
+  sizeButton.title = 'Make chat larger';
+  sizeButton.setAttribute('aria-pressed', 'false');
+  host.querySelector('.lc-toolbar-actions').prepend(sizeButton);
+  const grip = document.createElement('button');
+  grip.type = 'button';
+  grip.className = 'lc-resize-grip';
+  grip.textContent = '⤡';
+  grip.setAttribute('aria-label', 'Resize chat. Drag, or use arrow keys. Shift plus arrow resizes faster.');
+  grip.title = 'Drag to resize · Arrow keys also resize';
+  panel.append(grip);
+  function setChatSize(width, height) {
+    const maxWidth = Math.max(0, window.innerWidth - 32);
+    const maxHeight = Math.max(0, window.innerHeight - 120);
+    panel.style.setProperty('--lc-width', Math.min(maxWidth, Math.max(Math.min(320, maxWidth), width)) + 'px');
+    panel.style.setProperty('--lc-height', Math.min(maxHeight, Math.max(Math.min(360, maxHeight), height)) + 'px');
+  }
+  sizeButton.addEventListener('click', () => {
+    const large = sizeButton.getAttribute('aria-pressed') !== 'true';
+    sizeButton.setAttribute('aria-pressed', String(large));
+    sizeButton.setAttribute('aria-label', large ? 'Make chat smaller' : 'Make chat larger');
+    sizeButton.title = large ? 'Make chat smaller' : 'Make chat larger';
+    sizeButton.textContent = large ? '⤡' : '⤢';
+    setChatSize(large ? 480 : 380, large ? 680 : 500);
+  });
+  let resizeStart = null;
+  grip.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    const rect = panel.getBoundingClientRect();
+    resizeStart = {x:e.clientX, y:e.clientY, width:rect.width, height:rect.height};
+    grip.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  grip.addEventListener('pointermove', e => {
+    if (!resizeStart) return;
+    setChatSize(resizeStart.width + resizeStart.x - e.clientX, resizeStart.height + resizeStart.y - e.clientY);
+  });
+  function endResize() { resizeStart = null; }
+  grip.addEventListener('pointerup', endResize);
+  grip.addEventListener('pointercancel', endResize);
+  grip.addEventListener('lostpointercapture', endResize);
+  grip.addEventListener('keydown', e => {
+    if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) return;
+    e.preventDefault();
+    const rect = panel.getBoundingClientRect(), step = e.shiftKey ? 40 : 10;
+    setChatSize(rect.width + (e.key === 'ArrowLeft' ? step : e.key === 'ArrowRight' ? -step : 0),
+      rect.height + (e.key === 'ArrowUp' ? step : e.key === 'ArrowDown' ? -step : 0));
+  });
+
   const launcher = host.querySelector('.lc-launcher');
   const send = host.querySelector('[data-chat-send]');
   const optIn = host.querySelector('[data-ai-opt-in]');
