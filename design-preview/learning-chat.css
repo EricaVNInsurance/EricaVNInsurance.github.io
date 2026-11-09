@@ -51,3 +51,10 @@
 .lc-info-content .lc-mode{margin-top:7px}
 .lc-topic-menu .lc-choices,.lc-info-content{bottom:34px}
 @media(max-width:480px){.lc-panel{height:calc(100dvh - 90px)}.lc-toolbar{padding:7px 10px}.lc-controls{padding:7px 8px 4px}.lc-minirow{gap:8px}.lc-toolbar strong{font-size:14px}.lc-minirow .lc-privacy{font-size:9px}.lc-info>summary{width:22px}}
+
+/* A smaller starting panel with visitor-controlled sizing. */
+.lc-panel{width:min(var(--lc-width,380px),calc(100vw - 32px));height:min(var(--lc-height,500px),calc(100dvh - 120px))}
+.lc-size-toggle{font:inherit;font-size:23px;min-width:36px;min-height:36px;padding:2px;border:0;background:none;color:var(--primary);cursor:pointer}
+.lc-resize-grip{position:absolute;top:0;left:0;width:24px;height:24px;padding:0;border:0;background:var(--surface);color:var(--muted);font-size:17px;line-height:24px;cursor:nwse-resize;touch-action:none;border-radius:20px 0 8px 0;z-index:4}
+.lc-resize-grip:focus-visible{outline-offset:-3px!important}
+@media(max-width:480px){.lc-panel{width:calc(100vw - 24px);height:min(var(--lc-height,500px),calc(100dvh - 100px))}.lc-resize-grip{display:none}.lc-toolbar strong{font-size:13px}.lc-toolbar-actions{gap:0}.lc-size-toggle,.lc-reset,.lc-close{min-width:32px}}
