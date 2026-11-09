@@ -73,14 +73,6 @@
   const panel = host.querySelector('.lc-panel');
 
   // Keep sizing controls shared across every page that uses this widget.
-  const sizeButton = document.createElement('button');
-  sizeButton.type = 'button';
-  sizeButton.className = 'lc-size-toggle';
-  sizeButton.textContent = '⤢';
-  sizeButton.setAttribute('aria-label', 'Make chat larger');
-  sizeButton.title = 'Make chat larger';
-  sizeButton.setAttribute('aria-pressed', 'false');
-  host.querySelector('.lc-toolbar-actions').prepend(sizeButton);
   const grip = document.createElement('button');
   grip.type = 'button';
   grip.className = 'lc-resize-grip';
@@ -94,14 +86,6 @@
     panel.style.setProperty('--lc-width', Math.min(maxWidth, Math.max(Math.min(320, maxWidth), width)) + 'px');
     panel.style.setProperty('--lc-height', Math.min(maxHeight, Math.max(Math.min(360, maxHeight), height)) + 'px');
   }
-  sizeButton.addEventListener('click', () => {
-    const large = sizeButton.getAttribute('aria-pressed') !== 'true';
-    sizeButton.setAttribute('aria-pressed', String(large));
-    sizeButton.setAttribute('aria-label', large ? 'Make chat smaller' : 'Make chat larger');
-    sizeButton.title = large ? 'Make chat smaller' : 'Make chat larger';
-    sizeButton.textContent = large ? '⤡' : '⤢';
-    setChatSize(large ? 480 : 380, large ? 680 : 500);
-  });
   let resizeStart = null;
   grip.addEventListener('pointerdown', e => {
     if (e.button !== 0) return;
