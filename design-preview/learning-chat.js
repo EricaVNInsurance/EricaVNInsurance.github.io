@@ -88,6 +88,9 @@
     if (open) input.focus({preventScroll:true}); else launcher.focus({preventScroll:true});
   }
   launcher.addEventListener('click', () => openChat(panel.hidden));
+  document.querySelectorAll('[data-open-learning-chat]').forEach(button => {
+    button.addEventListener('click', () => openChat(true));
+  });
   host.querySelector('.lc-close').addEventListener('click', () => openChat(false));
   host.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) { e.preventDefault(); openChat(false); } });
   if (aiReady) {
