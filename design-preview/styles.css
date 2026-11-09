@@ -44,3 +44,38 @@
 .nav-links .explore-link{font-size:13px}
 @media(max-width:1000px){.choice-compact-box{align-items:flex-start;flex-direction:column}.nav-links{gap:18px}}
 @media(max-width:640px){.choice-section{padding:52px 0}.choice-grid{grid-template-columns:1fr;gap:18px}.choice-card{padding:26px}.choice-card h3{font-size:26px}.choice-compact-box{padding:24px}.choice-compact-actions{flex-direction:column;align-items:flex-start;width:100%}.choice-compact-actions>div{align-items:flex-start;width:100%}.choice-compact-actions .btn{width:100%;text-align:center}.choice-heading h2 br{display:none}.choice-heading h2 br::after{content:' '}}
+
+/* Medicare Help: situations first, optional reading, one shared learning assistant. */
+.help-hero{padding:76px 0 58px}
+.help-hero h1{font-size:clamp(42px,6vw,68px);max-width:900px}
+.help-hero-note{font-size:14px;color:var(--muted);margin-top:18px}
+.help-chat-section{padding:0 0 28px}
+.help-chat-invite{display:flex;align-items:center;gap:24px;background:var(--soft-green);border:1px solid var(--border);border-radius:24px;padding:30px}
+.help-chat-symbol{display:grid;place-items:center;flex-shrink:0;width:60px;height:60px;background:var(--surface);border-radius:18px;color:var(--primary)}
+.help-chat-copy{flex:1}
+.help-chat-copy .eyebrow{font-size:11px;margin-bottom:9px}
+.help-chat-copy h2{font-size:30px;margin:0 0 10px}
+.help-chat-copy p{font-size:16px;line-height:1.6;color:var(--muted);max-width:600px}
+.help-chat-status{display:block;margin-top:9px;font-size:11px;color:var(--muted)}
+.help-chat-open{font:inherit;font-size:14px;border:0;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:14px}
+.help-situations-section{padding:60px 0}
+.help-situations-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.help-situation{display:flex;flex-direction:column;padding:30px;border:1px solid var(--border);border-radius:22px;background:var(--surface)}
+.help-situation .eyebrow{font-size:11px;margin-bottom:14px}
+.help-situation h3{font-size:26px;line-height:1.25;margin-bottom:14px}
+.help-situation>p{font-size:17px;color:var(--muted);line-height:1.65;margin-bottom:24px}
+.help-primary-link{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:650;color:var(--primary);text-decoration:underline;text-underline-offset:4px}
+.help-situation .help-primary-link{margin-top:auto}
+.help-guide-link{font-size:12px;color:var(--muted);margin-top:12px;text-decoration:underline;text-underline-offset:3px}
+.help-compare{display:flex;align-items:center;justify-content:space-between;gap:30px;padding:30px;border-radius:22px;background:var(--soft-green);margin-top:22px}
+.help-compare h3{font-size:26px;margin-bottom:12px}
+.help-compare .eyebrow{font-size:11px;margin-bottom:12px}
+.help-compare p{font-size:17px;line-height:1.65;color:var(--muted);max-width:650px}
+.help-compare-actions{display:flex;flex-direction:column;align-items:center;gap:16px;flex-shrink:0}
+.help-compare-actions .btn{display:inline-flex;align-items:center;gap:12px}
+.help-expect-section{background:var(--soft-green);padding:64px 0}
+.help-expect-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.help-expect-grid h3{font-size:23px;margin-bottom:14px}
+.help-expect-grid p{font-size:17px;color:var(--muted);line-height:1.65}
+.help-keep-learning{font-size:14px;text-align:center;color:var(--primary);margin-top:24px;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:760px){.help-chat-invite{flex-wrap:wrap;padding:24px;gap:16px}.help-chat-symbol{display:none}.help-chat-copy{flex-basis:100%}.help-situations-grid{grid-template-columns:1fr}.help-situation{padding:24px}.help-expect-grid{grid-template-columns:1fr;gap:28px}.help-compare{flex-direction:column;align-items:flex-start;padding:24px}.help-compare-actions{align-items:flex-start}.help-hero{padding:56px 0 40px}.help-chat-copy h2{font-size:27px}}
